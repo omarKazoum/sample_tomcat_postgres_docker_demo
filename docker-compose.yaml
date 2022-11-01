@@ -1,0 +1,27 @@
+services:
+  my_db_service:
+    image: postgres:9-alpine
+    ports:
+      - "999:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - type: bind
+        source: ./data
+        target: /var/lib/postgresql/data
+  adminer_service:
+    image: adminer
+    ports:
+      - 7878:8080
+    depends_on:
+      - ibrahim_db
+  tomcat_service:
+    image: tomcat:10
+    ports:
+      - 9099:8080
+    volumes:
+      - type: bind
+        source: ./target/demo_docker_tomcat-1.0-SNAPSHOT.war
+        target: /usr/local/tomcat/webapps/ROOT.war
+
